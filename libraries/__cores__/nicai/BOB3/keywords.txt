@@ -1,0 +1,81 @@
+ 
+#######################################
+# Syntax Coloring Map BOB3
+#######################################
+
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+bob3	KEYWORD3	BOB3
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+Bob3	KEYWORD2
+begin	KEYWORD2  
+setLed	KEYWORD2
+setEyes	KEYWORD2
+setWhiteLeds	KEYWORD2
+getLed	KEYWORD2
+getArm	KEYWORD2
+enableArms	KEYWORD2
+getIRSensor	KEYWORD2
+getIRLight	KEYWORD2
+enableIRSensor	KEYWORD2
+getTemperature	KEYWORD2
+getMillivolt	KEYWORD2
+getID	KEYWORD2
+receiveIRCode	KEYWORD2
+transmitIRCode	KEYWORD2
+
+# global functions
+delay	KEYWORD2
+mixColor	KEYWORD2
+rgb	KEYWORD2
+hsv	KEYWORD2
+hsvx	KEYWORD2
+randomNumber	KEYWORD2
+randomBits	KEYWORD2
+random32	KEYWORD2
+random16	KEYWORD2
+random8	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+# Colors
+#######################################
+OFF	LITERAL1
+ON	LITERAL1
+WHITE	LITERAL1
+YELLOW	LITERAL1
+ORANGE	LITERAL1
+KABARED	LITERAL1
+RED	LITERAL1
+FUCHSIA	LITERAL1
+PURPLE	LITERAL1
+VIOLET	LITERAL1
+CYAN	LITERAL1
+AQUAMARINE	LITERAL1
+BLUE	LITERAL1
+ROYALBLUE	LITERAL1
+FORESTGREEN	LITERAL1
+SEAGREEN	LITERAL1
+GREEN	LITERAL1
+# other
+ARM_1	LITERAL1
+ARM_2	LITERAL1
+EYE_1	LITERAL1
+EYE_2	LITERAL1
+LED_3	LITERAL1
+LED_4	LITERAL1
+#######################################
+# Constants (LITERAL1)
+# PortPins
+#######################################
+IO_RXD	LITERAL1
+IO_TXD	LITERAL1
+IO_PC0	LITERAL1
+IO_PC1	LITERAL1
+IO_PC2	LITERAL1
+IO_PC3	LITERAL1
+ 

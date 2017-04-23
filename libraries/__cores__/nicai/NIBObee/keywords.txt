@@ -1,0 +1,98 @@
+ 
+#######################################
+# Syntax Coloring Map NIBObee
+#######################################
+
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+NIBObee	KEYWORD3	NIBObee
+Engine	KEYWORD3
+FeelerL	KEYWORD3	NIBObee
+FeelerR	KEYWORD3	NIBObee
+LineSensor	KEYWORD3	NIBObee
+ExtSensorL	KEYWORD3	NIBObee
+ExtSensorR	KEYWORD3	NIBObee
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+getVoltage	KEYWORD2
+checkVoltage	KEYWORD2
+getLed	KEYWORD2
+setLed	KEYWORD2
+resetTicks	KEYWORD2
+getTicks	KEYWORD2
+getSpeed	KEYWORD2
+setPWM	KEYWORD2
+setSpeed	KEYWORD2
+setTargetAbs	KEYWORD2
+setTargetRel	KEYWORD2
+getTargetDist	KEYWORD2
+stop	KEYWORD2
+stopImmediate	KEYWORD2
+get	KEYWORD2
+getL	KEYWORD2
+getC	KEYWORD2
+getR	KEYWORD2
+calibrateWhite	KEYWORD2
+calibrateBlack	KEYWORD2
+storeCalibration	KEYWORD2
+get	KEYWORD2
+activate	KEYWORD2
+deactivate	KEYWORD2
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+left	KEYWORD2
+right	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+OFF	LITERAL1
+ON	LITERAL1
+LED0	LITERAL1
+LED1	LITERAL1
+LED2	LITERAL1
+LED3	LITERAL1
+SENSOR_MODE_OFF	LITERAL1
+SENSOR_MODE_ON	LITERAL1
+SENSOR_MODE_PULSE	LITERAL1
+
+# Port Pins Constants
+IO_RXD	LITERAL1
+IO_TXD	LITERAL1
+IO_ODO_L	LITERAL1
+IO_ODO_R	LITERAL1
+IO_PWM_R	LITERAL1
+IO_PWM_L	LITERAL1
+IO_DIR_L	LITERAL1
+IO_DIR_R	LITERAL1
+IO_PC0	LITERAL1
+IO_PC1	LITERAL1
+IO_PC2	LITERAL1
+IO_PC3	LITERAL1
+IO_SENS_L1	LITERAL1
+IO_SENS_L2	LITERAL1
+IO_SENS_R1	LITERAL1
+IO_SENS_R2	LITERAL1
+IO_LED0	LITERAL1
+IO_LED1	LITERAL1
+IO_LED2	LITERAL1
+IO_LED3	LITERAL1
+IO_LINE_EN	LITERAL1
+IO_MOSI	LITERAL1
+IO_MISO	LITERAL1
+IO_SCK	LITERAL1
+IO_AN0	LITERAL1
+IO_AN1	LITERAL1
+IO_AN2	LITERAL1
+IO_AN3	LITERAL1
+IO_VBAT	LITERAL1
+IO_LINE_L	LITERAL1
+IO_LINE_C	LITERAL1
+IO_LINE_R	LITERAL1

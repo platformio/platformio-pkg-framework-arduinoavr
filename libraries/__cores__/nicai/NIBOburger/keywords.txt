@@ -1,0 +1,226 @@
+ 
+#######################################
+# Syntax Coloring Map NIBOburger
+#######################################
+
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+NIBOburger	KEYWORD3	NIBOburger
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+NIBOburgerClass	KEYWORD2
+begin	KEYWORD2  
+getVoltage	KEYWORD2
+setMonitorVoltage	KEYWORD2
+checkVoltage	KEYWORD2
+setLeds	KEYWORD2
+setLed	KEYWORD2getLed	KEYWORD2
+getLed	KEYWORD2nt  getLed (int led) 
+waitAnalogUpdate	KEYWORD2
+getAnalog	KEYWORD2
+getKeyState	KEYWORD2
+getKeyChar	KEYWORD2
+getRandomSeed	KEYWORD2
+randomize	KEYWORD2
+getRandomInt	KEYWORD2
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+Engine	KEYWORD3	NIBOburger
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+EngineClass	KEYWORD2
+begin	KEYWORD2
+getSpeed	KEYWORD2
+setPWM	KEYWORD2
+setSpeed	KEYWORD2
+setTargetAbs	KEYWORD2
+setTargetRel	KEYWORD2
+stop	KEYWORD2
+stopImmediate	KEYWORD2 
+EnginePartClass  left	KEYWORD2 
+EnginePartClass  right	KEYWORD2 
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+EnginePart	KEYWORD3	ENGINE
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+EnginePartClass	KEYWORD2
+resetTicks	KEYWORD2
+getTicks	KEYWORD2
+ 
+#######################################
+# Instances (KEYWORD2)
+#######################################
+left	KEYWORD2
+right	KEYWORD2
+ 
+#######################################
+# Constants (LITERAL1)
+#######################################
+OFF	LITERAL1
+ON	LITERAL1
+LED1	LITERAL1
+LED2	LITERAL1
+LED3	LITERAL1
+LED4	LITERAL1
+SENSOR_MODE_OFF	LITERAL1
+SENSOR_MODE_ON	LITERAL1
+SENSOR_MODE_PULSE	LITERAL1
+ 
+# Port Pins Constants
+IO_RXD	LITERAL1
+IO_TXD	LITERAL1
+IO_ODO_L	LITERAL1
+IO_ODO_R	LITERAL1
+IO_PWM_R	LITERAL1
+IO_PWM_L	LITERAL1
+IO_DIR_L	LITERAL1
+IO_DIR_R	LITERAL1
+IO_PC0	LITERAL1
+IO_PC1	LITERAL1
+IO_PC2	LITERAL1
+IO_PC3	LITERAL1
+IO_SENS_L1	LITERAL1
+IO_SENS_L2	LITERAL1
+IO_SENS_R1	LITERAL1
+IO_SENS_R2	LITERAL1
+IO_LED0	LITERAL1
+IO_LED1	LITERAL1
+IO_LED2	LITERAL1
+IO_LED3	LITERAL1
+IO_LINE_EN	LITERAL1
+IO_MOSI	LITERAL1
+IO_MISO	LITERAL1
+IO_SCK	LITERAL1
+IO_AN0	LITERAL1
+IO_AN1	LITERAL1
+IO_AN2	LITERAL1
+IO_AN3	LITERAL1
+IO_VBAT	LITERAL1
+IO_LINE_L	LITERAL1
+IO_LINE_C	LITERAL1
+IO_LINE_R	LITERAL1
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+Sensor	KEYWORD3	NIBOburger
+ 
+######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+SensorClass	KEYWORD2
+begin	KEYWORD2 
+activate	KEYWORD2
+deactivate	KEYWORD2
+get	KEYWORD2
+ 
+######################################
+# Constants (LITERAL1)
+#######################################
+CALIBRATE_BLACK	LITERAL1
+CALIBRATE_WHITE	LITERAL1
+CALIBRATE_RED	LITERAL1
+CALIBRATE_BLUE	LITERAL1
+CALIBRATE_GREEN	LITERAL1
+CALIBRATE_YELLOW	LITERAL1
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+ColorHSV	KEYWORD3	SurfaceSensor
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+ColorHSV	KEYWORD2	ColorHSV
+~ColorHSV	KEYWORD2	ColorHSV
+getColorHSV	KEYWORD2	ColorHSV
+diff	KEYWORD2	ColorHSV
+ 
+######################################
+# Constants (LITERAL1)
+#######################################
+SensorFL	LITERAL1 
+SensorFR	LITERAL1 
+SensorFLL	LITERAL1 
+SensorFRR	LITERAL1 
+SensorBL	LITERAL1 
+SensorBC	LITERAL1 
+SensorBR	LITERAL1 
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+SurfaceSensor	KEYWORD3	NIBOburger
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2 
+get	KEYWORD2 
+getL	KEYWORD2 
+getC	KEYWORD2 
+getR	KEYWORD2 
+getCL	KEYWORD2 
+getCR	KEYWORD2
+calibrateWhite	KEYWORD2
+calibrateBlack	KEYWORD2
+storeCalibration	KEYWORD2
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+ColorRGB	KEYWORD3	SurfaceSensor
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+ColorRGB	KEYWORD2	ColorRGB
+~ColorRGB	KEYWORD2	ColorRGB
+getColorRGB	KEYWORD2	ColorRGB
+diff	KEYWORD2	ColorRGB
+ 
+######################################
+# Constants (LITERAL1)
+#######################################
+CALIBRATE_BLACK	LITERAL1
+CALIBRATE_WHITE	LITERAL1
+CALIBRATE_RED	LITERAL1
+CALIBRATE_BLUE	LITERAL1
+CALIBRATE_GREEN	LITERAL1
+CALIBRATE_YELLOW	LITERAL1
+ 
+#######################################
+# global Instances (KEYWORD3)
+#######################################
+ColorHSV	KEYWORD3	SurfaceSensor
+ 
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+ColorHSV	KEYWORD2	ColorHSV
+~ColorHSV	KEYWORD2	ColorHSV
+getColorHSV	KEYWORD2	ColorHSV
+diff	KEYWORD2	ColorHSV
+ 
+######################################
+# Constants (LITERAL1)
+#######################################
+CALIBRATE_BLACK	LITERAL1
+CALIBRATE_WHITE	LITERAL1
+CALIBRATE_RED	LITERAL1
+CALIBRATE_BLUE	LITERAL1
+CALIBRATE_GREEN	LITERAL1
+CALIBRATE_YELLOW	LITERAL1
