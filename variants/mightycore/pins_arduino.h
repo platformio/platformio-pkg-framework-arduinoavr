@@ -4,11 +4,11 @@
 #include <avr/pgmspace.h>
 /*
 
-		   MIGHTYCORE STANDARD PINOUT
+                 MIGHTYCORE STANDARD PINOUT
          ATmega8535, ATmega16, ATmega32, ATmega164, 
               ATmega324, ATmega644, ATmega1284
    	 
-  	                 +---\/---+
+                         +---\/---+
          LED (D 0) PB0  1|        |40  PA0 (A 0 / D24)
              (D 1) PB1  2|        |39  PA1 (A 1 / D25)
         INT2 (D 2) PB2  3|        |38  PA2 (A 2 / D26)
@@ -30,14 +30,12 @@
         PWM (D 13) PD5 19|        |22  PC0 (D 16) SCL
        PWM* (D 14) PD6 20|        |21  PD7 (D 15) PWM
                          +--------+
-	  PWM: ATmega8535/16/32/164/324/644/1284
-		PWM*: ATmega164/324/644/1284
-		      PWM**: ATmega1284
-
-
-PCINT ONLY ON ATmega164/324/644/1284
+       PWM: ATmega8535/16/32/164/324/644/1284
+       PWM*: ATmega164/324/644/1284
+       PWM**: ATmega1284
+       PCINT ONLY ON ATmega164/324/644/1284
    
-PCINT15-8: D7-0  : bit 1
+PCINT15-8: D7-0    : bit 1
 PCINT31-24: D15-8  : bit 3
 PCINT23-16: D23-16 : bit 2
 PCINT7-0: D31-24   : bit 0
@@ -46,8 +44,10 @@ PCINT7-0: D31-24   : bit 0
 #define STANDARD_PINOUT
 #define NUM_DIGITAL_PINS            32
 #define NUM_ANALOG_INPUTS           8
+#define EXTERNAL_NUM_INTERRUPTS     3
 #define analogInputToDigitalPin(p)  ((p < NUM_ANALOG_INPUTS) ? (p) + 24 : -1)
-#define digitalPinToInterrupt(p)  ((p) == 2 ? 2 : ((p) == 10 ? 0 : ((p) == 11 ? 1 : NOT_AN_INTERRUPT)))
+#define analogPinToChannel(p)       ((p) < NUM_ANALOG_INPUTS ? (p) : (p) >= 24 ? (p) - 24 : -1)
+#define digitalPinToInterrupt(p)    ((p) == 2 ? 2 : ((p) == 10 ? 0 : ((p) == 11 ? 1 : NOT_AN_INTERRUPT)))
 
 #if defined(__AVR_ATmega8535__) || defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__)
 #define digitalPinHasPWM(p)         ((p) == 3 || (p) == 12 || (p) == 13 || (p) == 15)
@@ -58,7 +58,7 @@ defined(__AVR_ATmega644P__)
 #define digitalPinHasPWM(p)         ((p) == 3 || (p) == 4 || (p) == 12 || (p) == 13 || (p) == 14 || (p) == 15)
 
 #elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
- #define digitalPinHasPWM(p)         ((p) == 3 || (p) == 4 || (p) == 6 || (p) == 7 || (p) == 12 || (p) == 13 || (p) == 14 || (p) == 15)
+ #define digitalPinHasPWM(p)        ((p) == 3 || (p) == 4 || (p) == 6 || (p) == 7 || (p) == 12 || (p) == 13 || (p) == 14 || (p) == 15)
 #endif
 
 
@@ -87,8 +87,8 @@ static const uint8_t A7 = 31;
 defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega644__) || \
 defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
 #define digitalPinToPCICR(p)    (((p) >= 0 && (p) < NUM_DIGITAL_PINS) ? (&PCICR) : ((uint8_t *)0))
-#define digitalPinToPCICRbit(p) (((p) <= 7) ? 1 : (((p) <= 15) ? 3 : (((p) <= 23) ? 2 : 0)))
-#define digitalPinToPCMSK(p)    (((p) <= 7) ? (&PCMSK2) : (((p) <= 13) ? (&PCMSK0) : (((p) <= 21) ? (&PCMSK1) : ((uint8_t *)0))))
+#define digitalPinToPCICRbit(p) ( (p) <= 7 ? 1 : (p) <= 15 ? 3 : (p) <= 23 ? 2 : 0 )
+#define digitalPinToPCMSK(p)    ( (p) <= 7 ? &PCMSK1 : (p) <= 15 ? &PCMSK3 : (p) <= 23 ? &PCMSK2 : &PCMSK0 )
 #define digitalPinToPCMSKbit(p) ((p) % 8)
 #endif
 
@@ -174,7 +174,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] =
 	PC,
 	PC,
 	PC,
-   	PC,
+	PC,
 	PC,
 	PA, /* D24 */
 	PA,
