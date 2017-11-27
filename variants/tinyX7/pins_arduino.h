@@ -40,22 +40,43 @@
 #define MOSI 11
 #define MISO 12
 #define SCK  13
-
+#define USI_DDR_PORT DDRB
+#define USI_SCK_PORT DDRB
+#define USCK_DD_PIN DDA2
+#define DO_DD_PIN DDA1
+#define DI_DD_PIN DDA0
 #define SDA 13
 #define SCL 11
 
+
+#  define DDR_USI DDRB
+#  define PORT_USI PORTB
+#  define PIN_USI PINB
+#  define PORT_USI_SDA PORTB0
+#  define PORT_USI_SCL PORTB2
+#  define PIN_USI_SDA PINB0
+#  define PIN_USI_SCL PINB2
+#  define USI_START_VECTOR USI_START_vect
+#  define USI_OVERFLOW_VECTOR USI_OVF_vect
+#  define DDR_USI_CL DDR_USI
+#  define PORT_USI_CL PORT_USI
+#  define PIN_USI_CL PIN_USI
+#ifndef USI_START_COND_INT
+#  define USI_START_COND_INT USISIF
+#endif
+
 //Ax constants cannot be used for digitalRead/digitalWrite/analogWrite functions, only analogRead().
-static const uint8_t A0 = 0;
-static const uint8_t A1 = 1;
-static const uint8_t A2 = 2;
-static const uint8_t A3 = 3;
-static const uint8_t A4 = 4;
-static const uint8_t A5 = 5;
-static const uint8_t A6 = 6;
-static const uint8_t A7 = 7;
-static const uint8_t A8 = 8;
-static const uint8_t A9 = 9;
-static const uint8_t A10 = 10;
+static const uint8_t A0 = 0x80 | 0;
+static const uint8_t A1 = 0x80 | 1;
+static const uint8_t A2 = 0x80 | 2;
+static const uint8_t A3 = 0x80 | 3;
+static const uint8_t A4 = 0x80 | 4;
+static const uint8_t A5 = 0x80 | 5;
+static const uint8_t A6 = 0x80 | 6;
+static const uint8_t A7 = 0x80 | 7;
+static const uint8_t A8 = 0x80 | 8;
+static const uint8_t A9 = 0x80 | 9;
+static const uint8_t A10 = 0x80 | 10;
 #define LED_BUILTIN (4)
 
 //----------------------------------------------------------
@@ -70,7 +91,7 @@ static const uint8_t A10 = 10;
 
 //Choosing not to initialise saves power and flash. 1 = initialise.
 #define INITIALIZE_ANALOG_TO_DIGITAL_CONVERTER    1
-#define INITIALIZE_SECONDARY_TIMERS               0
+#define INITIALIZE_SECONDARY_TIMERS               1
 
 #define TIMER_TO_USE_FOR_MILLIS                   0
 

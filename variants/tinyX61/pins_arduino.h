@@ -37,31 +37,50 @@
 
 #define digitalPinHasPWM(p)          ((p) == 4 || (p) == 6 || (p) == 8)
 
+//This part has a USI, not an SPI module. Accordingly, there is no MISO/MOSI in hardware. There's a DI and a DO. When the chip is used as master, DI is used as MISO, DO is MOSI; the defines here specify the pins for master mode, as SPI master is much more commonly used in Arduino-land than SPI slave, and these defines are required for compatibility. Be aware of this when using the USI SPI fucntionality (and also, be aware that the MISO and MOSI markings on the pinout diagram in the datasheet are for ISP programming, where the chip is a slave. The pinout diagram included with this core attempts to clarify this)
+
+
 #define SS   6
-#define MOSI 9
-#define MISO 8
+#define MOSI 8
+#define MISO 9
 #define SCK  7
 
 #define USI_DDR_PORT DDRB
+#define USI_SCK_PORT DDRB
 #define USCK_DD_PIN DDB2
 #define DO_DD_PIN DDB0
 #define DI_DD_PIN DDB1
+#  define DDR_USI DDRB
+#  define PORT_USI PORTB
+#  define PIN_USI PINB
+#  define PORT_USI_SDA PB0
+#  define PORT_USI_SCL PB2
+#  define PIN_USI_SDA PINB0
+#  define PIN_USI_SCL PINB2
+#  define USI_START_VECTOR USI_START_vect
+#  define USI_OVERFLOW_VECTOR USI_OVF_vect
+#  define DDR_USI_CL DDR_USI
+#  define PORT_USI_CL PORT_USI
+#  define PIN_USI_CL PIN_USI
+#ifndef USI_START_COND_INT
+#  define USI_START_COND_INT USISIF
+#endif
 
 static const uint8_t SDA = 0;
 static const uint8_t SCL = 2;
 
 //Ax constants cannot be used for digitalRead/digitalWrite/analogWrite functions, only analogRead().
-static const uint8_t A0 = 0;
-static const uint8_t A1 = 1;
-static const uint8_t A2 = 2;
-static const uint8_t A3 = 3;
-static const uint8_t A4 = 4;
-static const uint8_t A5 = 5;
-static const uint8_t A6 = 6;
-static const uint8_t A7 = 7;
-static const uint8_t A8 = 8;
-static const uint8_t A9 = 9;
-static const uint8_t A10 = 10;
+static const uint8_t A0 = 0x80 | 0;
+static const uint8_t A1 = 0x80 | 1;
+static const uint8_t A2 = 0x80 | 2;
+static const uint8_t A3 = 0x80 | 3;
+static const uint8_t A4 = 0x80 | 4;
+static const uint8_t A5 = 0x80 | 5;
+static const uint8_t A6 = 0x80 | 6;
+static const uint8_t A7 = 0x80 | 7;
+static const uint8_t A8 = 0x80 | 8;
+static const uint8_t A9 = 0x80 | 9;
+static const uint8_t A10 = 0x80 | 10;
 
 #define PIN_A0  (0)
 #define PIN_A1  ( 1)
