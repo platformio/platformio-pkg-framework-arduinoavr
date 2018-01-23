@@ -36,6 +36,8 @@
 #define NUM_ANALOG_INPUTS           8
 #define analogInputToDigitalPin(p)  ((p < 8) ? (p) + 24 : -1)
 
+#define digitalPinToInterrupt(p)  ((p) == 6 ? 2 : ((p) == 2 ? 0 : ((p) == 3 ? 1 : NOT_AN_INTERRUPT)))
+
 #ifdef __cplusplus
 extern "C"{
 #endif
