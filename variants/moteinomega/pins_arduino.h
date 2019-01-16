@@ -5,6 +5,9 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
+#define MOTEINO_MEGA
+#define MOTEINO_MEGA_USB
+
 #include <avr/pgmspace.h>
 
 //                         ATMEL ATMEGA644P/1284P
@@ -38,7 +41,7 @@
 // PCINT23-16: D23-16 : bit 2
 // PCINT7-0: D31-24   : bit 0
 
-#define NUM_DIGITAL_PINS            31
+#define NUM_DIGITAL_PINS            32
 #define NUM_ANALOG_INPUTS           8
 #define analogInputToDigitalPin(p)  ((p < NUM_ANALOG_INPUTS) ? (p) + 24 : -1)
 
@@ -48,6 +51,7 @@
 #define digitalPinHasPWM(p)         ((p) == 3 || (p) == 4 || (p) == 12 || (p) == 13 || (p) == 14 || (p) == 15)
 #endif
 
+static const uint8_t SS_FLASHMEM = 23;
 static const uint8_t SS   = 4;
 static const uint8_t MOSI = 5;
 static const uint8_t MISO = 6;
@@ -55,7 +59,7 @@ static const uint8_t SCK  = 7;
 
 static const uint8_t SDA = 17;
 static const uint8_t SCL = 16;
-//static const uint8_t LED = 15;
+static const uint8_t LED_BUILTIN = 15;
 
 static const uint8_t A0 = 24;
 static const uint8_t A1 = 25;
@@ -68,7 +72,7 @@ static const uint8_t A7 = 31;
 
 #define digitalPinToPCICR(p)    (((p) >= 0 && (p) < NUM_DIGITAL_PINS) ? (&PCICR) : ((uint8_t *)0))
 #define digitalPinToPCICRbit(p) (((p) <= 7) ? 1 : (((p) <= 15) ? 3 : (((p) <= 23) ? 2 : 0)))
-#define digitalPinToPCMSK(p)    (((p) <= 7) ? (&PCMSK2) : (((p) <= 13) ? (&PCMSK0) : (((p) <= 21) ? (&PCMSK1) : ((uint8_t *)0))))
+#define digitalPinToPCMSK(p)    (((p) <= 7) ? (&PCMSK1) : (((p) <= 15) ? (&PCMSK3) : (((p) <= 23) ? (&PCMSK2) : (&PCMSK0))))
 #define digitalPinToPCMSKbit(p) ((p) % 8)
 
 #ifdef ARDUINO_MAIN
