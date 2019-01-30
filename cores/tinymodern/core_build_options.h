@@ -48,17 +48,19 @@
 #define TIMER_TO_USE_FOR_MILLIS                   0
 
 /*
-  Tone goes on whichever timer was not used for millis.
+  Tone goes on timer2 for maximum compatibility
 */
-#if TIMER_TO_USE_FOR_MILLIS == 1
-#define TIMER_TO_USE_FOR_TONE                     0
-#else
-#define TIMER_TO_USE_FOR_TONE                     1
-#endif
+#define TIMER_TO_USE_FOR_TONE                     2
 
 #define HAVE_ADC                                  1
 
 #define DEFAULT_TO_TINY_DEBUG_SERIAL              0
+
+/*=============================================================================
+  Disable HW serial support completely, freeing up flash and RAM
+=============================================================================*/
+
+#define DISABLE_UART                              0
 
 
 // missing defines (?)

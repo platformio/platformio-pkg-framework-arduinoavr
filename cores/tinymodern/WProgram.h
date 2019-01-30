@@ -2,6 +2,7 @@
 #define WProgram_h
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -24,7 +25,7 @@ uint16_t makeWord(byte h, byte l);
 
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
 
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
+void tone(uint8_t _pin, unsigned long frequency, unsigned long duration = 0);
 void noTone(uint8_t _pin = 255);
 
 // WMath prototypes

@@ -3,6 +3,7 @@
   Part of Arduino - http://www.arduino.cc/
 
   Copyright (c) 2007 David A. Mellis
+  Copyright 2015~2018 Spence Konde
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -32,8 +33,10 @@
 #include <avr/pgmspace.h>
 
 #define NUM_DIGITAL_PINS            12
-#define NUM_ANALOG_INPUTS           64
+#define NUM_ANALOG_INPUTS           8
 #define analogInputToDigitalPin(p)  ((p < 8) ? 10 -(p): -1)
+
+#define ADC_TEMPERATURE 34
 
 #define digitalPinHasPWM(p)         ((p) == 2 || (p) == 3 || (p) == 4 || (p) == 5)
 

@@ -31,7 +31,7 @@
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
-	if (pin&128) {pin=analogInputToDigitalPin(pin&127);}
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
 	volatile uint8_t *reg, *out;
@@ -83,7 +83,24 @@ static void turnOffPWM(uint8_t timer)
 		cbi(TCCR1A, COM1A0);
 	} else
 	#endif
-
+    #if defined(TCCR1E) //attiny861
+	if( timer == TIMER1A){
+		// disconnect pwm to pin on timer 1, channel A
+		cbi(TCCR1C,COM1A1S);
+		cbi(TCCR1C,COM1A0S);
+		//cbi(TCCR1A,PWM1A);
+	} else if (timer == TIMER1B){
+		// disconnect pwm to pin on timer 1, channel B
+		cbi(TCCR1C,COM1B1S);
+		cbi(TCCR1C,COM1B0S);
+		//cbi(TCCR1A,PWM1B);
+	} else if (timer == TIMER1D){
+		// disconnect pwm to pin on timer 1, channel D
+		cbi(TCCR1C,COM1D1);
+		cbi(TCCR1C,COM1D0);
+		//cbi(TCCR1A,PWM1D);
+	} else
+    #endif
 	#if defined(TCCR1) && defined(COM1A1)
 	if(timer == TIMER1A){
 		cbi(TCCR1, COM1A1);
@@ -118,7 +135,7 @@ static void turnOffPWM(uint8_t timer)
 
 void digitalWrite(uint8_t pin, uint8_t val)
 {
-	if (pin&128) {pin=analogInputToDigitalPin(pin&127);}
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
 	uint8_t timer = digitalPinToTimer(pin);
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
@@ -147,7 +164,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
 
 int digitalRead(uint8_t pin)
 {
-	if (pin&128) {pin=analogInputToDigitalPin(pin&127);}
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
 	uint8_t timer = digitalPinToTimer(pin);
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);

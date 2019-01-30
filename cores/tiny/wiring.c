@@ -275,15 +275,21 @@ void yield(void) __attribute__ ((weak, alias("__empty")));
 
 void delay(unsigned long ms)
 {
+  #if (F_CPU>=1000000L)
   uint16_t start = (uint16_t)micros();
 
   while (ms > 0) {
     yield();
-    while (((uint16_t)micros() - start) >= 1000) {
+    while (((uint16_t)micros() - start) >= 1000 && ms) {
       ms--;
       start += 1000;
     }
   }
+  #else
+  uint32_t start = millis();
+  while((millis() - start) < ms)  /* NOP */yield();
+  return;
+  #endif
 }
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8, 12, 16, 20 or 24 MHz clock. */
@@ -409,7 +415,6 @@ void delayMicroseconds(unsigned int us)
 
 #else
 	// for the 1 MHz internal clock (default settings for common AVR microcontrollers)
-
 	// the overhead of the function calls is 14 (16) cycles
 	if (us <= 16) return; //= 3 cycles, (4 when true)
 	if (us <= 25) return; //= 3 cycles, (4 when true), (must be at least 25 if we want to substract 22)
@@ -443,6 +448,9 @@ static void initToneTimerInternal(void)
   cbi(TCCR0A, WGM01);
   cbi(TCCR0B, WGM02);
   TCCR0B |= (ToneTimer_Prescale_Index << CS00);
+  #elif defined(__AVR_ATtiny43__)
+  TCCR1A = 3; //WGM 10=1, WGM11=1
+  TCCR1B = 3; //prescaler of 64
   #elif (TIMER_TO_USE_FOR_TONE == 1) && defined(TCCR1)
   TCCR1 &= ~((1<<CS13) | (1<<CS12) | (1<<CS11) | (1<<CS10)); //stop the clock to configure
   // Use the Tone Timer for fast PWM as phase correct not supported by this timer
@@ -513,7 +521,9 @@ void initToneTimer(void)
   TIMSK &= ~((1<<OCIE1A) | (1<<OCIE1B) | (1<<TOIE1));
   // Clear the Timer1 interrupt flags
   TIFR |= ((1<<OCF1A) | (1<<OCF1B) | (1<<TOV1));
-  
+  #elif (TIMER_TO_USE_FOR_TONE==1) && defined (__AVR_ATtiny43__)
+  TCCR1A = 0; //WGM 10=1, WGM11=1
+  TCCR1B = 0; //prescaler of 64
   
   #elif (TIMER_TO_USE_FOR_TONE == 1) && defined(TCCR1E)
   TCCR1A = 0;
@@ -605,6 +615,10 @@ PLLCSR |= PCKE;
 
 void init(void)
 {
+  #if defined(__AVR_ATtiny43__) && F_CPU==4000000L
+  CLKPR=128; //CLKPCE
+  CLKPR=1; //prescale by 2 for 4MHz
+  #endif
 
   // In case the bootloader left our millis timer in a bad way
   #if defined( HAVE_BOOTLOADER ) && HAVE_BOOTLOADER
@@ -743,7 +757,7 @@ void init(void)
   //#if !defined(__AVR_ATtiny85__)
  // sbi(TCCR1, PWM1A); //for the tiny 85, Timer0 is used instead.
   //#endif
-  //sbi(GTCCR, PWM1B);
+  sbi(GTCCR, PWM1B);
   OCR1C = 0xFF; //Use 255 as the top to match with the others as this module doesn't have a 8bit PWM mode.
   #elif (TIMER_TO_USE_FOR_MILLIS == 1) && defined(TCCR1E)
   sbi(TCCR1C, PWM1D);

@@ -244,7 +244,7 @@ int TwoWire::available(void)
 int TwoWire::read(void)
 {
   int value = -1;
-  
+
   // get each successive byte on each call
   if(rxBufferIndex < rxBufferLength){
     value = rxBuffer[rxBufferIndex];
@@ -260,7 +260,7 @@ int TwoWire::read(void)
 int TwoWire::peek(void)
 {
   int value = -1;
-  
+
   if(rxBufferIndex < rxBufferLength){
     value = rxBuffer[rxBufferIndex];
   }
@@ -345,20 +345,20 @@ const uint8_t WIRE_BUFFER_LENGTH = TWI_BUFFER_SIZE - 1; //reserve slave addr
 
 // Initialize Class Variables //////////////////////////////////////////////////
 
-uint8_t *USIWire::Buffer = TWI_Buffer;
-uint8_t USIWire::BufferIndex = 0;
-uint8_t USIWire::BufferLength = 0;
+uint8_t *TwoWire::Buffer = TWI_Buffer;
+uint8_t TwoWire::BufferIndex = 0;
+uint8_t TwoWire::BufferLength = 0;
 
-uint8_t USIWire::transmitting = 0;
+uint8_t TwoWire::transmitting = 0;
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-USIWire::USIWire() {
+TwoWire::TwoWire() {
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void USIWire::begin(void) {
+void TwoWire::begin(void) {
   BufferIndex = 0;
   BufferLength = 0;
 
@@ -367,24 +367,24 @@ void USIWire::begin(void) {
   USI_TWI_Master_Initialise();
 }
 
-void USIWire::begin(uint8_t address) {
+void TwoWire::begin(uint8_t address) {
   USI_TWI_Slave_Initialise(address);
 }
 
-void USIWire::begin(int address) {
+void TwoWire::begin(int address) {
   begin((uint8_t)address);
 }
 
-void USIWire::end(void) {
+void TwoWire::end(void) {
   USI_TWI_Slave_Disable();
 }
 
-void USIWire::setClock(uint32_t clock) {
+void TwoWire::setClock(uint32_t clock) {
   // XXX: to be implemented.
   (void)clock; //disable warning
 }
 
-uint8_t USIWire::requestFrom(uint8_t address, uint8_t quantity,
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity,
                              uint32_t iaddress, uint8_t isize,
                              uint8_t sendStop) {
   if (isize > 0) {
@@ -430,25 +430,25 @@ uint8_t USIWire::requestFrom(uint8_t address, uint8_t quantity,
   return quantity - 1; // ignore slave address
 }
 
-uint8_t USIWire::requestFrom(uint8_t address, uint8_t quantity,
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity,
                              uint8_t sendStop) {
   return requestFrom((uint8_t)address, (uint8_t)quantity, (uint32_t)0,
                      (uint8_t)0, (uint8_t)sendStop);
 }
 
-uint8_t USIWire::requestFrom(uint8_t address, uint8_t quantity) {
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity) {
   return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)true);
 }
 
-uint8_t USIWire::requestFrom(int address, int quantity) {
+uint8_t TwoWire::requestFrom(int address, int quantity) {
   return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)true);
 }
 
-uint8_t USIWire::requestFrom(int address, int quantity, int sendStop) {
+uint8_t TwoWire::requestFrom(int address, int quantity, int sendStop) {
   return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)sendStop);
 }
 
-void USIWire::beginTransmission(uint8_t address) {
+void TwoWire::beginTransmission(uint8_t address) {
   // indicate that we are transmitting
   transmitting = 1;
   // set address of targeted slave and write mode
@@ -458,11 +458,11 @@ void USIWire::beginTransmission(uint8_t address) {
   BufferLength = BufferIndex;
 }
 
-void USIWire::beginTransmission(int address) {
+void TwoWire::beginTransmission(int address) {
   beginTransmission((uint8_t)address);
 }
 
-uint8_t USIWire::endTransmission(uint8_t sendStop) {
+uint8_t TwoWire::endTransmission(uint8_t sendStop) {
   // transmit buffer (blocking)
   uint8_t ret = USI_TWI_Start_Transceiver_With_Data_Stop(Buffer,
                                                          BufferLength,
@@ -487,14 +487,14 @@ uint8_t USIWire::endTransmission(uint8_t sendStop) {
   return 0; //success
 }
 
-uint8_t USIWire::endTransmission(void) {
+uint8_t TwoWire::endTransmission(void) {
   return endTransmission(true);
 }
 
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-size_t USIWire::write(uint8_t data) {
+size_t TwoWire::write(uint8_t data) {
   if (transmitting) { // in master transmitter mode
     // don't bother if buffer is full
     if (BufferLength >= TWI_BUFFER_SIZE) {
@@ -519,7 +519,7 @@ size_t USIWire::write(uint8_t data) {
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-size_t USIWire::write(const uint8_t *data, size_t quantity) {
+size_t TwoWire::write(const uint8_t *data, size_t quantity) {
   size_t numBytes = 0;
   for (size_t i = 0; i < quantity; ++i){
     numBytes += write(data[i]);
@@ -530,7 +530,7 @@ size_t USIWire::write(const uint8_t *data, size_t quantity) {
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-size_t USIWire::write(const char *str) {
+size_t TwoWire::write(const char *str) {
   if (str == NULL) return 0;
   return write((const uint8_t *)str, strlen(str));
 }
@@ -538,7 +538,7 @@ size_t USIWire::write(const char *str) {
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-int USIWire::available(void) {
+int TwoWire::available(void) {
   if (BufferLength) {
     return BufferLength - BufferIndex;
   } else {
@@ -549,7 +549,7 @@ int USIWire::available(void) {
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-int USIWire::read(void) {
+int TwoWire::read(void) {
   int value = -1;
 
   // get each successive byte on each call
@@ -568,7 +568,7 @@ int USIWire::read(void) {
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-int USIWire::peek(void) {
+int TwoWire::peek(void) {
   int value = -1;
 
   if (available()) {
@@ -582,30 +582,32 @@ int USIWire::peek(void) {
   return value;
 }
 
-void USIWire::flush(void) {
+void TwoWire::flush(void) {
   // XXX: to be implemented.
 }
 
 // sets function called on slave write
-void USIWire::onReceive( void (*function)(int) ) {
+void TwoWire::onReceive( void (*function)(int) ) {
   USI_TWI_On_Slave_Receive = function;
 }
 
 // sets function called on slave read
-void USIWire::onRequest( void (*function)(void) ) {
+void TwoWire::onRequest( void (*function)(void) ) {
   USI_TWI_On_Slave_Transmit = function;
 }
 
 // return true on I2C/TWI activity
-uint8_t USIWire::isActive(void) {
+uint8_t TwoWire::isActive(void) {
   return USI_TWI_Slave_Is_Active();
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////s
-USIWire Wire = USIWire();
+TwoWire Wire = TwoWire();
 #else 
 #if defined(TWSD) && !defined(__AVR_ATtiny1634__)
-#include "TWSWire.h"
+
+#include "Wire.h"
+//#include "TWSWire.h"
 #include <string.h>
 
 #if defined(__AVR_ATtiny841__) || defined(__AVR_ATtiny441__)
@@ -622,93 +624,124 @@ USIWire Wire = USIWire();
 #error No pins for software I2C defined
 #endif
 #define I2C_TIMEOUT 100
+#ifndef WIRE_SLAVE_ONLY
 #include "SoftWire.h"
 static SoftWire softWire;
+#endif
 
+#ifndef WIRE_MASTER_ONLY
 #include "WireS.h"
+#endif
 
 // Constructors ////////////////////////////////////////////////////////////////
-
-TWSWire::TWSWire() : slaveMode(false) {
+//#ifndef WIRE_MASTER_ONLY
+TwoWire::TwoWire() : slaveMode(false) {
 }
-
+//#else
+//TwoWire::TwoWire()
+//#endif
 // Public Methods //////////////////////////////////////////////////////////////
 
-void TWSWire::begin(void) {
+#ifdef WIRE_BOTH
+void TwoWire::begin(void) {
 	softWire.begin();
 	slaveMode = false;
 }
+#endif
+#ifdef WIRE_MASTER_ONLY
+void TwoWire::begin(void) {
+  softWire.begin();
+}
+#endif
 
-void TWSWire::begin(uint8_t address) {
+
+#ifndef WIRE_MASTER_ONLY
+void TwoWire::begin(uint8_t address) {
 	TinyWireS.begin(address, 0);
 	slaveMode = true;
 }
 
-void TWSWire::begin(int address) {
+void TwoWire::begin(int address) {
 	begin((uint8_t)address);
 }
+#endif
 
-void TWSWire::end(void) {
+void TwoWire::end(void) {
 	// XXX: to be implemented.
 }
 
-void TWSWire::setClock(uint32_t clock) {
+void TwoWire::setClock(uint32_t clock) {
 	// XXX: to be implemented.
 	(void)clock; //disable warning
 }
-
-uint8_t TWSWire::requestFrom(uint8_t address, uint8_t quantity,
+#ifndef WIRE_SLAVE_ONLY
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity,
 	uint32_t iaddress, uint8_t isize,
 	uint8_t sendStop) {
+  #ifndef WIRE_MASTER_ONLY
 	if (!slaveMode) {
+    #endif
 		return softWire.requestFrom(address, quantity, iaddress, isize, sendStop);
+  #ifndef WIRE_MASTER_ONLY
 	}
 	return 0;
+  #endif
 }
 
-uint8_t TWSWire::requestFrom(uint8_t address, uint8_t quantity,
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity,
 	uint8_t sendStop) {
 	return requestFrom((uint8_t)address, (uint8_t)quantity, (uint32_t)0,
 		(uint8_t)0, (uint8_t)sendStop);
 }
 
-uint8_t TWSWire::requestFrom(uint8_t address, uint8_t quantity) {
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity) {
 	return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)true);
 }
 
-uint8_t TWSWire::requestFrom(int address, int quantity) {
+uint8_t TwoWire::requestFrom(int address, int quantity) {
 	return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)true);
 }
 
-uint8_t TWSWire::requestFrom(int address, int quantity, int sendStop) {
+uint8_t TwoWire::requestFrom(int address, int quantity, int sendStop) {
 	return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)sendStop);
 }
 
-void TWSWire::beginTransmission(uint8_t address) {
+void TwoWire::beginTransmission(uint8_t address) {
 	if (!slaveMode) {
 		softWire.beginTransmission(address);
 	}
 }
 
-void TWSWire::beginTransmission(int address) {
+void TwoWire::beginTransmission(int address) {
 	beginTransmission((uint8_t)address);
 }
 
-uint8_t TWSWire::endTransmission(uint8_t sendStop) {
-	if (!slaveMode) {
+uint8_t TwoWire::endTransmission(uint8_t sendStop) {
+
+  #ifndef WIRE_MASTER_ONLY
+  if (!slaveMode) {
+  #endif
 		return softWire.endTransmission(sendStop);
+  #ifndef WIRE_MASTER_ONLY
 	}
 	return 4; //other error
+  #endif
 }
 
-uint8_t TWSWire::endTransmission(void) {
+uint8_t TwoWire::endTransmission(void) {
 	return endTransmission(true);
 }
+
+#endif //stuff that's not there in slave only
 
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-size_t TWSWire::write(uint8_t data) {
+
+
+
+#if defined(WIRE_BOTH)
+size_t TwoWire::write(uint8_t data) {
 	size_t numBytes = 0;
 	if (!slaveMode) {
 		numBytes = softWire.write(data);
@@ -722,26 +755,16 @@ size_t TWSWire::write(uint8_t data) {
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-size_t TWSWire::write(const uint8_t *data, size_t quantity) {
-	size_t numBytes = 0;
-	for (size_t i = 0; i < quantity; ++i) {
-		numBytes += write(data[i]);
-	}
-	return numBytes;
-}
 
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-size_t TWSWire::write(const char *str) {
-	if (str == NULL) return 0;
-	return write((const uint8_t *)str, strlen(str));
-}
+
 
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-int TWSWire::available(void) {
+int TwoWire::available(void) {
 	int value = -1;
 	if (!slaveMode) {
 		value = softWire.available();
@@ -755,7 +778,7 @@ int TWSWire::available(void) {
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-int TWSWire::read(void) {
+int TwoWire::read(void) {
 	int value = -1;
 	if (!slaveMode) {
 		value = softWire.read();
@@ -769,7 +792,7 @@ int TWSWire::read(void) {
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-int TWSWire::peek(void) {
+int TwoWire::peek(void) {
 	int value = -1;
 	if (!slaveMode) {
 		value = softWire.peek();
@@ -779,23 +802,124 @@ int TWSWire::peek(void) {
 	}
 	return value;
 }
-
-void TWSWire::flush(void) {
-	// XXX: to be implemented.
+#elif defined(WIRE_MASTER_ONLY)
+size_t TwoWire::write(uint8_t data) {
+  size_t numBytes = 0;
+    numBytes = softWire.write(data);
+  return numBytes;
 }
 
+// must be called in:
+// slave tx event callback
+// or after beginTransmission(address)
+
+
+// must be called in:
+// slave tx event callback
+// or after beginTransmission(address)
+
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::available(void) {
+  int value = -1;
+    value = softWire.available();
+  return value;
+}
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::read(void) {
+  int value = -1;
+  value = softWire.read();
+  return value;
+}
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::peek(void) {
+  int value = -1;
+  value = softWire.peek();
+  return value;
+}
+#else //WIRE_SLAVE_ONLY
+size_t TwoWire::write(uint8_t data) {
+  size_t numBytes = 0;
+  numBytes = TinyWireS.write(data);
+  return numBytes;
+}
+
+// must be called in:
+// slave tx event callback
+// or after beginTransmission(address)
+
+
+// must be called in:
+// slave tx event callback
+// or after beginTransmission(address)
+
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::available(void) {
+  int value = -1;
+    value = TinyWireS.available();
+}
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::read(void) {
+  int value = -1;
+    value = TinyWireS.read();
+  return value;
+}
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::peek(void) {
+  int value = -1;
+  value = TinyWireS.peek();
+  return value;
+}
+
+#endif
+
+size_t TwoWire::write(const uint8_t *data, size_t quantity) {
+  size_t numBytes = 0;
+  for (size_t i = 0; i < quantity; ++i) {
+    numBytes += write(data[i]);
+  }
+  return numBytes;
+}
+
+size_t TwoWire::write(const char *str) {
+  if (str == NULL) return 0;
+  return write((const uint8_t *)str, strlen(str));
+}
+
+void TwoWire::flush(void) {
+	// XXX: to be implemented.
+}
+#ifndef WIRE_MASTER_ONLY
 // sets function called on slave write
-void TWSWire::onReceive(void(*function)(int)) {
+void TwoWire::onReceive(void(*function)(int)) {
 	TinyWireS.onReceive(function);
 }
 
 // sets function called on slave read
-void TWSWire::onRequest(void(*function)(void)) {
+void TwoWire::onRequest(void(*function)(void)) {
 	TinyWireS.onRequest(function);
 }
+#endif
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
-TWSWire Wire = TWSWire();
+TwoWire Wire = TwoWire();
 #else
 #error No Wire support on unknown board
 #endif // TWSD
