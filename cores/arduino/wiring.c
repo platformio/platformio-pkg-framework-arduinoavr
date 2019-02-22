@@ -42,9 +42,9 @@ volatile unsigned long timer0_overflow_count = 0;
 
 volatile unsigned long correction_millis = 0;
 volatile unsigned long correction_frac = 0;
+
 volatile unsigned long millis_correction_inc = 0;
 volatile unsigned long fract_correction_inc = 0;
-
 volatile unsigned int previous_prescaler = 0;
 
 // Returns the actual value of the prescaler of Timer 0 needed to calculate
@@ -124,15 +124,15 @@ ISR(TIMER0_OVF_vect)
 }
 
 void calc_incrementfactors(){
-  const unsigned long ULONG_MAX = 0UL - 1UL;
+  const unsigned long ULONG_MAX = 0ul - 1ul;
   //
 	// calculate # ticks to have just something more than a millisecond.
 	// and the overshoot in microsecs.
 
-  unsigned long ticks_per_milli = 1000/FRACT_INC + 1;
+  unsigned long ticks_per_milli = (1000/FRACT_INC) + 1;
 	unsigned long overshoot_per_milli = (ticks_per_milli*FRACT_INC) % 1000;
 
-  // calculate how often this happens in ULONG_MAX+1 TIM0_OVF's
+  // calculate how often this happens in UCHAR_MAX+1 TIM0_OVF's
 	// and the numer of unaccounted microsecs
 	unsigned long counted_millis = (ULONG_MAX - ticks_per_milli + 1)/ticks_per_milli + 1;
 	unsigned long sum_of_overshoots = (ULONG_MAX - counted_millis*ticks_per_milli + 1 ) * FRACT_INC +
@@ -140,7 +140,7 @@ void calc_incrementfactors(){
 
   // this leads to the number of millis and the number of microsecs
 	// to be added for every overflow of timer0_overflow_count
-	millis_correction_inc = ticks_per_milli + (sum_of_overshoots % 1000);
+	millis_correction_inc = counted_millis + (sum_of_overshoots / 1000);
 	fract_correction_inc = sum_of_overshoots % 1000;
 }
 
@@ -153,7 +153,7 @@ unsigned long millis()
 	// inconsistent value (e.g. in the middle of a write to timer0_millis)
 	cli();
 	m = timer0_overflow_count*MILLIS_INC + correction_millis +
-			(timer0_overflow_count*FRACT_INC + correction_frac) / 1000;
+			(timer0_overflow_count*FRACT_INC) / 1000;
 
 	if (previous_prescaler != getPrescaler()){
 		// prescaler is changed since last call. Correct increment values
@@ -195,8 +195,9 @@ unsigned long micros() {
 		m++;
 #endif
 
+	m = (m*MICROSECONDS_PER_TIMER0_OVERFLOW)+clockCyclesToMicroseconds(t)*getPrescaler();
 	SREG = oldSREG;
-	return (m*MICROSECONDS_PER_TIMER0_OVERFLOW)+clockCyclesToMicroseconds(t*getPrescaler());
+	return m;
 //	return (((m << 8) + t) * getPrescaler()) / clockCyclesPerMicrosecond();
 }
 
@@ -369,6 +370,7 @@ void init()
 	#error Timer 0 prescale factor 64 not set correctly
 #endif
 previous_prescaler = 64;
+calc_incrementfactors();
 
 	// enable timer 0 overflow interrupt
 #if defined(TIMSK) && defined(TOIE0)
