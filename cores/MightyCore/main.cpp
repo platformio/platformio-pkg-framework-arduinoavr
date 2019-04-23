@@ -19,7 +19,7 @@
 
 #include <Arduino.h>
 
-//Declared weak in Arduino.h to allow user redefinitions.
+// Declared weak in Arduino.h to allow user redefinitions.
 int atexit(void (* /*func*/ )()) { return 0; }
 
 // Weak empty variant initialization function.
@@ -27,23 +27,26 @@ int atexit(void (* /*func*/ )()) { return 0; }
 void initVariant() __attribute__((weak));
 void initVariant() { }
 
+//void setupUSB() __attribute__((weak));
+//void setupUSB() { }
+
 int main(void)
 {
-	init();
+  init();
 
-	initVariant();
+  initVariant();
 
 #if defined(USBCON)
-	USBDevice.attach();
+  USBDevice.attach();
 #endif
-	
-	setup();
+  
+  setup();
     
-	for (;;) {
-		loop();
-		if (serialEventRun) serialEventRun();
-	}
+  for (;;) {
+    loop();
+    if (serialEventRun) serialEventRun();
+  }
         
-	return 0;
+  return 0;
 }
 

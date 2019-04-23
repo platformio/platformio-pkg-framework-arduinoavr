@@ -40,8 +40,10 @@
   ISR(USART_RX_vect)
 #elif defined(USART0_RX_vect)
   ISR(USART0_RX_vect)
+#elif defined(USART0_RXC_vect)
+  ISR(USART0_RXC_vect)
 #elif defined(USART_RXC_vect)
-  ISR(USART_RXC_vect) // ATmega8
+  ISR(USART_RXC_vect)
 #else
   #error "Don't know what the Data Received vector is called for Serial"
 #endif
@@ -51,12 +53,10 @@
 
 #if defined(UART0_UDRE_vect)
 ISR(UART0_UDRE_vect)
-#elif defined(UART_UDRE_vect)
-ISR(UART_UDRE_vect)
-#elif defined(USART0_UDRE_vect)
-ISR(USART0_UDRE_vect)
 #elif defined(USART_UDRE_vect)
 ISR(USART_UDRE_vect)
+#elif defined(USART0_UDRE_vect)
+ISR(USART0_UDRE_vect)
 #else
   #error "Don't know what the Data Register Empty vector is called for Serial"
 #endif

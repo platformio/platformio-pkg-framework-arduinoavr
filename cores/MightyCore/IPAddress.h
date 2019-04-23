@@ -29,8 +29,8 @@
 class IPAddress : public Printable {
 private:
     union {
-	uint8_t bytes[4];  // IPv4 address
-	uint32_t dword;
+        uint8_t bytes[4];  // IPv4 address
+        uint32_t dword;
     } _address;
 
     // Access the raw byte array containing the address.  Because this returns a pointer
@@ -46,9 +46,9 @@ public:
     IPAddress(uint32_t address);
     IPAddress(const uint8_t *address);
 
-	bool fromString(const char *address);
+    bool fromString(const char *address);
     bool fromString(const String &address) { return fromString(address.c_str()); }
-  
+
     // Overloaded cast operator to allow IPAddress objects to be used where a pointer
     // to a four-byte uint8_t array is expected
     operator uint32_t() const { return _address.dword; };
@@ -74,6 +74,5 @@ public:
 };
 
 const IPAddress INADDR_NONE(0,0,0,0);
-
 
 #endif

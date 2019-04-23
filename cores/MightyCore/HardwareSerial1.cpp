@@ -40,6 +40,8 @@
 ISR(UART1_RX_vect)
 #elif defined(USART1_RX_vect)
 ISR(USART1_RX_vect)
+#elif defined(USART1_RXC_vect)
+ISR(USART1_RXC_vect)
 #else
 #error "Don't know what the Data Register Empty vector is called for Serial1"
 #endif

@@ -41,7 +41,8 @@
 class UDP : public Stream {
 
 public:
-  virtual uint8_t begin(uint16_t) =0;	// initialize, start listening on specified port. Returns 1 if successful, 0 if there are no sockets available to use
+  virtual uint8_t begin(uint16_t) =0;  // initialize, start listening on specified port. Returns 1 if successful, 0 if there are no sockets available to use
+  virtual uint8_t beginMulticast(IPAddress, uint16_t) { return 0; }  // initialize, start listening on specified multicast IP address and port. Returns 1 if successful, 0 on failure
   virtual void stop() =0;  // Finish with the UDP socket
 
   // Sending UDP packets
@@ -75,7 +76,7 @@ public:
   virtual int read(char* buffer, size_t len) =0;
   // Return the next byte from the current packet without moving on to the next byte
   virtual int peek() =0;
-  virtual void flush() =0;	// Finish reading the current packet
+  virtual void flush() =0;  // Finish reading the current packet
 
   // Return the IP address of the host who sent the current incoming packet
   virtual IPAddress remoteIP() =0;

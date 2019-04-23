@@ -3,7 +3,7 @@
 || @url            http://wiring.org.co/
 || @contribution   Hernando Barragan <b@wiring.org.co>
 ||
-|| Modified by MCUdude to work with MightyCore
+|| Modified by MCUdude to work with MegaCore
 ||
 */
 
@@ -23,7 +23,7 @@ void _portMode(uint8_t port, uint8_t mode)
   moderegister = portModeRegister(port);
 
   if(moderegister == NULL) 
-  	return;
+    return;
 
   uint8_t oldSREG = SREG;
   cli();
@@ -32,9 +32,9 @@ void _portMode(uint8_t port, uint8_t mode)
     *moderegister = 0xff;
   else if(mode == INPUT_PULLUP)
   {
-  	*moderegister = 0x00;
-  	volatile uint8_t *portregister = portOutputRegister(port);
-  	*portregister = 0xff;
+    *moderegister = 0x00;
+    volatile uint8_t *portregister = portOutputRegister(port);
+    *portregister = 0xff;
   }  
   else // INPUT
     *moderegister = 0x00;
@@ -50,7 +50,7 @@ uint8_t _portRead(uint8_t port)
   inputregister = portInputRegister(port);
 
   if(inputregister == NULL) 
-  	return 0;
+    return 0;
 
   uint8_t oldSREG = SREG;
   cli();
@@ -67,7 +67,7 @@ void _portWrite(uint8_t port, uint8_t val)
   portregister = portOutputRegister(port);
 
   if(portregister == NULL) 
-  	return;
+    return;
 
   uint8_t oldSREG = SREG;
   cli();
