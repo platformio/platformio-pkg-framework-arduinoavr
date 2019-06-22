@@ -18,85 +18,123 @@
 
 #include <avr/pgmspace.h>
 
-#define BOBUINO_PINOUT
-#if defined(__AVR_ATmega324PB__)
-#define NUM_DIGITAL_PINS            39
-#else
-#define NUM_DIGITAL_PINS            32
+#if defined(__AVR_ATmega644A__)
+  #define __AVR_ATmega644__
 #endif
-#define NUM_ANALOG_INPUTS           8
-#define EXTERNAL_NUM_INTERRUPTS     3
+
+
+// We're using the Bobuino pinout
+#define BOBUINO_PINOUT
+
+
+// Digital pins
+#if defined(__AVR_ATmega324PB__)
+  #define NUM_DIGITAL_PINS          (39)
+#else
+  #define NUM_DIGITAL_PINS          (32)
+#endif
+
+// PWM pins
+#if defined(__AVR_ATmega8535__) || defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__)
+  #define digitalPinHasPWM(p)       ((p) == 7 || (p) == 8 || (p) == 30 || (p) == 31)
+#elif defined(__AVR_ATmega164A__) || defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324A__) || \
+defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__)
+  #define digitalPinHasPWM(p)       ((p) == 7 || (p) == 8 || (p) == 9 || (p) == 10 || (p) == 30 || (p) == 31)
+#elif defined(__AVR_ATmega324PB__)
+  #define digitalPinHasPWM(p)       ((p) == 7 || (p) == 8 || (p) == 9 || (p) == 10 || (p) == 12 || (p) == 13 || (p) == 26 || (p) == 30 || (p) == 31)
+#elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
+  #define digitalPinHasPWM(p)       ((p) == 7 || (p) == 8 || (p) == 9 || (p) == 10 || (p) == 12 || (p) == 13 || (p) == 30 || (p) == 31)
+#endif
+
+// Builtin LED
+#define LED_BUILTIN   (13)
+static const uint8_t LED = LED_BUILTIN;
+
+// Analog pins
+#define PIN_A0 (14)
+#define PIN_A1 (15)
+#define PIN_A2 (16)
+#define PIN_A3 (17)
+#define PIN_A4 (18)
+#define PIN_A5 (19)
+#define PIN_A6 (20)
+#define PIN_A7 (21)
+static const uint8_t A0 = PIN_A0;
+static const uint8_t A1 = PIN_A1;
+static const uint8_t A2 = PIN_A2;
+static const uint8_t A3 = PIN_A3;
+static const uint8_t A4 = PIN_A4;
+static const uint8_t A5 = PIN_A5;
+static const uint8_t A6 = PIN_A6;
+static const uint8_t A7 = PIN_A7;
+#define NUM_ANALOG_INPUTS           (8)
 #define analogInputToDigitalPin(p)  ((p < NUM_ANALOG_INPUTS) ? (p) + 14 : -1)
 #define analogPinToChannel(p)       ((p) < NUM_ANALOG_INPUTS) ? (7 - (p)) : ((p)  >=  14 && (p) <= 21) ? (21 - (p)) : -1
-#define digitalPinToInterrupt(p)    ((p) == 2 ? 0 : ((p) == 3 ? 1 : ((p) == 6 ? 2 : NOT_AN_INTERRUPT)))
-#define ifpin(p,what,ifnot)         (((p) >= 0 && (p) < NUM_DIGITAL_PINS) ? (what) : (ifnot))
 
-#if defined(__AVR_ATmega8535__) || defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__)
-#define digitalPinHasPWM(p)         ((p) == 7 || (p) == 8 || (p) == 30 || (p) == 31)
-
-#elif defined(__AVR_ATmega164A__) || defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324A__) || \
-defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega644__) || \
-defined(__AVR_ATmega644P__)
-#define digitalPinHasPWM(p)         ((p) == 7 || (p) == 8 || (p) == 9 || (p) == 10 || (p) == 30 || (p) == 31)
-
-#elif defined(__AVR_ATmega324PB__)
-#define digitalPinHasPWM(p)         ((p) == 7 || (p) == 8 || (p) == 9 || (p) == 10 || (p) == 12 || (p) == 13 || (p) == 26 || (p) == 30 || (p) == 31)
-
-#elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
-#define digitalPinHasPWM(p)         ((p) == 7 || (p) == 8 || (p) == 9 || (p) == 10 || (p) == 12 || (p) == 13 || (p) == 30 || (p) == 31)
-#endif
-
-
-static const uint8_t SS   = 10;
-static const uint8_t MOSI = 11;
-static const uint8_t MISO = 12;
-static const uint8_t SCK  = 13;
-
-static const uint8_t LED = 13;
-#define LED_BUILTIN 13
-
-static const uint8_t SDA = 23;
-static const uint8_t SCL = 22;
-
+// SPI
+#define PIN_SPI_SS    (10)
+#define PIN_SPI_MOSI  (11)
+#define PIN_SPI_MISO  (12)
+#define PIN_SPI_SCK   (13)
+static const uint8_t SS   = PIN_SPI_SS;
+static const uint8_t MOSI = PIN_SPI_MOSI;
+static const uint8_t MISO = PIN_SPI_MISO;
+static const uint8_t SCK  = PIN_SPI_SCK;
 #if defined(__AVR_ATmega324PB__)
-static const uint8_t SS0   = 10;
-static const uint8_t MOSI0 = 11;
-static const uint8_t MISO0 = 12;
-static const uint8_t SCK0  = 13;
-static const uint8_t SDA0  = 23;
-static const uint8_t SCL0  = 22;
-static const uint8_t SS1   = 9;
-static const uint8_t SCK1  = 31;
-static const uint8_t MISO1 = 34;
-static const uint8_t MOSI1 = 35;
-static const uint8_t SDA1  = 37;
-static const uint8_t SCL1  = 38;
+  #define PIN_SPI_SS0   PIN_SPI_SS
+  #define PIN_SPI_MOSI0 PIN_SPI_MOSI
+  #define PIN_SPI_MISO0 PIN_SPI_MISO
+  #define PIN_SPI_SCK0  PIN_SPI_SCK
+  #define PIN_SPI_SS1   (9)
+  #define PIN_SPI_MOSI1 (35)
+  #define PIN_SPI_MISO1 (34)
+  #define PIN_SPI_SCK1  (31)
+  static const uint8_t SS0   = PIN_SPI_SS0;
+  static const uint8_t MOSI0 = PIN_SPI_MOSI0;
+  static const uint8_t MISO0 = PIN_SPI_MISO0;
+  static const uint8_t SCK0  = PIN_SPI_SCK0;
+  static const uint8_t SS1   = PIN_SPI_SS1;
+  static const uint8_t MOSI1 = PIN_SPI_MOSI1;
+  static const uint8_t MISO1 = PIN_SPI_MISO1;
+  static const uint8_t SCK1  = PIN_SPI_SCK1;
+#endif  
+
+// i2c
+#define PIN_WIRE_SDA  (23)
+#define PIN_WIRE_SCL  (22)
+static const uint8_t SDA = PIN_WIRE_SDA;
+static const uint8_t SCL = PIN_WIRE_SCL;
+#if defined(__AVR_ATmega324PB__)
+  #define PIN_WIRE_SDA0 PIN_WIRE_SDA
+  #define PIN_WIRE_SCL0 PIN_WIRE_SCL
+  #define PIN_WIRE_SDA1 (37)
+  #define PIN_WIRE_SCL1 (38)
+  static const uint8_t SDA0  = PIN_WIRE_SDA0;
+  static const uint8_t SCL0  = PIN_WIRE_SCL0;
+  static const uint8_t SDA1  = PIN_WIRE_SDA1;
+  static const uint8_t SCL1  = PIN_WIRE_SCL1;
 #endif
 
-static const uint8_t A0 = 14;
-static const uint8_t A1 = 15;
-static const uint8_t A2 = 16;
-static const uint8_t A3 = 17;
-static const uint8_t A4 = 18;
-static const uint8_t A5 = 19;
-static const uint8_t A6 = 20;
-static const uint8_t A7 = 21;
+// Interrupts
+#define EXTERNAL_NUM_INTERRUPTS     (3)
+#define digitalPinToInterrupt(p)    ((p) == 2 ? 0 : ((p) == 3 ? 1 : ((p) == 6 ? 2 : NOT_AN_INTERRUPT)))
 
-
+// PCINT
 #if defined(__AVR_ATmega164A__) || defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324A__) || \
 defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega324PB__) || \
-defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || \
+defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || \
 defined(__AVR_ATmega1284P__)
-
 #if defined(__AVR_ATmega324PB__)
 #define PORT_NDX_TO_PCMSK(x) ((x) == 0 ? &PCMSK0 : ((x) == 1 ? &PCMSK1 : ((x) == 2 ? &PCMSK2 : ((x) == 3 ? &PCMSK3 : ((x) == 4 ? &PCMSK4 : (uint8_t )0)))))
 #else
 #define PORT_NDX_TO_PCMSK(x) ((x) == 0 ? &PCMSK0 : ((x) == 1 ? &PCMSK1 : ((x) == 2 ? &PCMSK2 : ((x) == 3 ? &PCMSK3 : (uint8_t )0))))
 #endif
+#define ifpin(p,what,ifnot)         (((p) >= 0 && (p) < NUM_DIGITAL_PINS) ? (what) : (ifnot))
 #define digitalPinToPCICR(p)    ifpin(p,&PCICR,(uint8_t *)0)
 #define digitalPinToPCICRbit(p) ifpin(p,digital_pin_to_pcint[p] >> 3,0)
 #define digitalPinToPCMSK(p)    ifpin(p,(uint8_t *)PORT_NDX_TO_PCMSK(digital_pin_to_pcint[p] >> 3),(uint8_t *)0)
 #define digitalPinToPCMSKbit(p) ifpin(p,digital_pin_to_pcint[p] & 0x7,0)
+
 
 #ifndef ARDUINO_MAIN
 extern const uint8_t digital_pin_to_pcint[];
@@ -149,73 +187,6 @@ const uint8_t digital_pin_to_pcint[NUM_DIGITAL_PINS] =
 
 #endif
 
-#if defined(__AVR_ATmega164PA__) || defined(__AVR_ATmega324A__) || defined(__AVR_ATmega324P__)\
-|| defined(__AVR_ATmega324PA__)
-/**** Needed to get the SD library to work. 
-Missing definitions in the iom164.h/iom324.h file ****/
-#define SPR0 SPR00
-#define SPR1 SPR10
-#define CPHA CPHA0
-#define CPOL CPOL0
-#define MSTR MSTR0
-#define DORD DORD0
-#define SPE SPE0
-#define SPIE SPIE0
-#define SPSR SPSR0
-#define SPI2X SPI2X0
-#define WCOL WCOL0
-#define SPIF SPIF0
-#define SPCR SPCR0
-#define SPDR SPDR0
-#endif
-
-// Missing definitions in iom324pb.h file
-#if defined(__AVR_ATmega324PB__)
-// i2c
-#define TWI_vect TWI0_vect
-#define TWI_vect_num TWI0_vect_num
-#define TWBR TWBR0
-#define TWSR TWSR0
-#define TWS3 TWS03
-#define TWS4 TWS04
-#define TWS5 TWS05
-#define TWS6 TWS06
-#define TWS7 TWS07
-#define TWAR TWAR0
-#define TWDR TWDR0
-#define TWD0 0
-#define TWD1 1
-#define TWD2 2
-#define TWD3 3
-#define TWD4 4
-#define TWD5 5
-#define TWD6 6
-#define TWD7 7
-#define TWCR  TWCR0
-#define TWAMR TWAMR0
-#define TWAM0 TWAM00
-#define TWAM1 TWAM01
-#define TWAM2 TWAM02
-#define TWAM3 TWAM03
-#define TWAM4 TWAM04
-#define TWAM5 TWAM05
-#define TWAM6 TWAM06
-
-// SPI
-#define SPI_STC_vect SPI0_STC_vect
-#define SPI_STC_vect_num SPI0_STC_vect_num
-#define SPCR SPCR0
-#define SPSR SPSR0
-#define SPDR SPDR0
-#define SPDRB0 0
-#define SPDRB1 1
-#define SPDRB2 2
-#define SPDRB3 3
-#define SPDRB4 4
-#define SPDRB5 5
-#define SPDRB6 6
-#define SPDRB7 7
-#endif
 
 #ifdef ARDUINO_MAIN
 
@@ -224,7 +195,7 @@ Missing definitions in the iom164.h/iom324.h file ****/
 #define PC 3
 #define PD 4
 #if defined(__AVR_ATmega324PB__)
-#define PE 5
+  #define PE 5
 #endif
 
 // these arrays map port names (e.g. port B) to the
@@ -356,7 +327,6 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] =
 #endif
 };
 
-
 #if defined(__AVR_ATmega8535__) || defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__)
 const uint8_t PROGMEM digital_pin_to_timer_PGM[] =
 {
@@ -395,7 +365,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] =
 };
 
 #elif defined(__AVR_ATmega164A__) || defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324A__) || \
-defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega644__) || \
+defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega644A__) || \
 defined(__AVR_ATmega644P__)
 const uint8_t PROGMEM digital_pin_to_timer_PGM[] =
 {
@@ -517,6 +487,148 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] =
 
 #endif // ARDUINO_MAIN
 
-#endif // Pins_Arduino_h
 
-// vim:ai:cin:sts=2 sw=2 ft=cpp
+// Missing definitions in iom164pa.h/iom324a.h/iom324p.h/iom324pa.h
+#if defined(__AVR_ATmega164PA__) || defined(__AVR_ATmega324A__) || defined(__AVR_ATmega324P__)\
+|| defined(__AVR_ATmega324PA__)
+  #define SPSR SPSR0
+  #define SPDR SPDR0
+  #define SPCR SPCR0
+  #define SPR0 SPR00
+  #define SPR1 SPR10
+  #define CPHA CPHA0
+  #define CPOL CPOL0
+  #define MSTR MSTR0
+  #define DORD DORD0
+  #define SPE  SPE0
+  #define SPIE SPIE0
+  #define SPI2X SPI2X0
+  #define WCOL WCOL0
+  #define SPIF SPIF0
+#endif
+
+
+// Missing definitions in iom324pb.h file + better backwards compatibility
+#if defined(__AVR_ATmega324PB__)
+  // USART
+  #define MPCM0   MPCM
+  #define U2X0    U2X
+  #define UPE0    UPE
+  #define DOR0    DOR
+  #define FE0     FE
+  #define UDRE0   UDRE
+  #define TXC0    TXC
+  #define RXC0    RXC
+  #define TXB80   TXB8
+  #define RXB80   RXB8
+  #define UCSZ02  UCSZ2
+  #define TXEN0   TXEN
+  #define RXEN0   RXEN
+  #define UDRIE0  UDRIE
+  #define TXCIE0  TXCIE
+  #define RXCIE0  RXCIE
+  #define UCPOL0  UCPOL
+  #define UCSZ00  UCSZ0
+  #define UCSZ01  UCSZ1
+  #define USBS0   USBS
+  #define UPM00   UPM0
+  #define UPM01   UPM1
+  #define UMSEL00 UMSEL0
+  #define UMSEL01 UMSEL1  
+  #define MPCM1   MPCM
+  #define U2X1    U2X
+  #define UPE1    UPE
+  #define DOR1    DOR
+  #define FE1     FE
+  #define UDRE1   UDRE
+  #define TXC1    TXC
+  #define RXC1    RXC
+  #define TXB81   TXB8
+  #define RXB81   RXB8
+  #define UCSZ12  UCSZ2
+  #define TXEN1   TXEN
+  #define RXEN1   RXEN
+  #define UDRIE1  UDRIE
+  #define TXCIE1  TXCIE
+  #define RXCIE1  RXCIE
+  #define UCPOL1  UCPOL
+  #define UCSZ10  UCSZ0
+  #define UCSZ11  UCSZ1
+  #define USBS1   USBS
+  #define UPM10   UPM0
+  #define UPM11   UPM1
+  #define UMSEL10 UMSEL0
+  #define UMSEL11 UMSEL1 
+  #define MPCM2   MPCM
+  #define U2X2    U2X
+  #define UPE2    UPE
+  #define DOR2    DOR
+  #define FE2     FE
+  #define UDRE2   UDRE
+  #define TXC2    TXC
+  #define RXC2    RXC
+  #define TXB82   TXB8
+  #define RXB82   RXB8
+  #define UCSZ22  UCSZ2
+  #define TXEN2   TXEN
+  #define RXEN2   RXEN
+  #define UDRIE2  UDRIE
+  #define TXCIE2  TXCIE
+  #define RXCIE2  RXCIE
+  #define UCPOL2  UCPOL
+  #define UCSZ20  UCSZ0
+  #define UCSZ21  UCSZ1
+  #define USBS2   USBS
+  #define UPM20   UPM0
+  #define UPM21   UPM1
+  #define UMSEL20 UMSEL0
+  #define UMSEL21 UMSEL1
+  
+  // i2c
+  #define TWI_vect TWI0_vect
+  #define TWI_vect_num TWI0_vect_num
+  #define TWBR TWBR0
+  #define TWSR TWSR0
+  #define TWS3 TWS03
+  #define TWS4 TWS04
+  #define TWS5 TWS05
+  #define TWS6 TWS06
+  #define TWS7 TWS07
+  #define TWAR TWAR0
+  #define TWDR TWDR0
+  #define TWD0 0
+  #define TWD1 1
+  #define TWD2 2
+  #define TWD3 3
+  #define TWD4 4
+  #define TWD5 5
+  #define TWD6 6
+  #define TWD7 7
+  #define TWCR  TWCR0
+  #define TWAMR TWAMR0
+  #define TWAM0 TWAM00
+  #define TWAM1 TWAM01
+  #define TWAM2 TWAM02
+  #define TWAM3 TWAM03
+  #define TWAM4 TWAM04
+  #define TWAM5 TWAM05
+  #define TWAM6 TWAM06
+
+  // SPI
+  #define SPI_STC_vect SPI0_STC_vect
+  #define SPI_STC_vect_num SPI0_STC_vect_num
+  #define SPCR SPCR0
+  #define SPSR SPSR0
+  #define SPDR SPDR0
+  #define SPDRB0 0
+  #define SPDRB1 1
+  #define SPDRB2 2
+  #define SPDRB3 3
+  #define SPDRB4 4
+  #define SPDRB5 5
+  #define SPDRB6 6
+  #define SPDRB7 7
+
+#endif // 324PB defs
+
+#endif // Pins_Arduino_h
