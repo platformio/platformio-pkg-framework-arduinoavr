@@ -2,5 +2,5 @@
     "name": "framework-arduinoavr",
     "description": "Arduino Wiring-based Framework (AVR Core, 1.6)",
     "url": "https://www.arduino.cc/en/Main/Software",
-    "version": "4.1.1"
+    "version": "4.1.2"
 }
