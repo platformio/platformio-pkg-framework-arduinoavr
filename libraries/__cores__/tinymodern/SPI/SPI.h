@@ -5,9 +5,9 @@
  * Original version of tinyISP by Jack Christensen 24Oct2013               *
  *                                                                         *
  * Added support for Attiny24/25, and Attiny2313/4313                      *
- * by Leonardo Miliani 28Nov2014                                           *               
+ * by Leonardo Miliani 28Nov2014                                           *
  *                                                                         *
- * Reworked to add support for 87/167, 261/461/861, and include the normal * 
+ * Reworked to add support for 87/167, 261/461/861, and include the normal *
  * SPI library on chips that have hardware SPI.                            *
  * Spence Konde 2016 (in progress)                                         *
  *                                                                         *
@@ -19,7 +19,7 @@
  * letter to Creative Commons, 171 Second Street, Suite 300,               *
  * San Francisco, California, 94105, USA.                                  *
  *-------------------------------------------------------------------------*/
- 
+
 #ifndef tinycoreSPI_h
 #define tinycoreSPI_h
 
@@ -128,7 +128,7 @@ private:
     // slowest (128 == 2 ^^ 7, so clock_div = 6).
     uint8_t clockDiv;
 
-    // When the clock is known at compiletime, use this if-then-else
+    // When the clock is known at compile time, use this if-then-else
     // cascade, which the compiler knows how to completely optimize
     // away. When clock is not known, use a loop instead, which generates
     // shorter code.
@@ -344,7 +344,7 @@ private:
 extern SPIClass SPI;
 
 
-#else 
+#else
 
 #ifdef USICR //if we have a USI instead, use that
 
@@ -429,13 +429,13 @@ private:
   uint8_t usicr;
   uint8_t delay;
   USI_impl::ClockOut clockoutfn;
-  friend class tinySPI;
+  friend class SPIClass;
 };
 
-class tinySPI
+class SPIClass
 {
  public:
-  tinySPI();
+  SPIClass();
   static void begin();
   static void beginTransaction(SPISettings settings);
   static uint8_t transfer(uint8_t data);
@@ -474,11 +474,11 @@ private:
   static uint8_t interruptSave; // temp storage, to restore state
 };
 
-extern tinySPI SPI;
+extern SPIClass SPI;
 
 
 
-#else 
+#else
 //if no USICR and no TWBR
 
 #error No supported hardware
@@ -486,6 +486,3 @@ extern tinySPI SPI;
 #endif //end if USICR
 #endif //end if TWBR
 #endif //end of module include guard
-
-
-
