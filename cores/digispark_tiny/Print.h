@@ -31,11 +31,11 @@
 
 #include "WString.h"
 
-#define DEC 10
-#define HEX 16
-#define OCT 8
-#define BIN 2
-#define BYTE 0
+const int BASE_DEC = 10;
+const int BASE_HEX = 16;
+const int BASE_OCT = 8;
+const int BASE_BIN = 2;
+const int BASE_BYTE = 0;
 
 #define ARDUINO_CORE_PRINTABLE_SUPPORT
 
@@ -76,23 +76,23 @@ class Print
     
     void print(const String &);
     void print(const char[]);
-    void print(char, int = BYTE);
-    void print(unsigned char, int = BYTE);
-    void print(int, int = DEC);
-    void print(unsigned int, int = DEC);
-    void print(long, int = DEC);
-    void print(unsigned long, int = DEC);
+    void print(char, int = BASE_BYTE);
+    void print(unsigned char, int = BASE_BYTE);
+    void print(int, int = BASE_DEC);
+    void print(unsigned int, int = BASE_DEC);
+    void print(long, int = BASE_DEC);
+    void print(unsigned long, int = BASE_DEC);
     void print(double, int = 2);
     int  print( fstr_t* );
 
     void println(const String &s);
     void println(const char[]);
-    void println(char, int = BYTE);
-    void println(unsigned char, int = BYTE);
-    void println(int, int = DEC);
-    void println(unsigned int, int = DEC);
-    void println(long, int = DEC);
-    void println(unsigned long, int = DEC);
+    void println(char, int = BASE_BYTE);
+    void println(unsigned char, int = BASE_BYTE);
+    void println(int, int = BASE_DEC);
+    void println(unsigned int, int = BASE_DEC);
+    void println(long, int = BASE_DEC);
+    void println(unsigned long, int = BASE_DEC);
     void println(double, int = 2);
     int  println( fstr_t* );
     int  println(void);
